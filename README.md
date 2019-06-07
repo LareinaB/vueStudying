@@ -1,3 +1,6 @@
+vue入门学习  包括组件间传值 生命周期等
+
+
 # vuestudying
 
 > A Vue.js project
