@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+  <!--在父级中绑定原生事件给组件，需要加.native, 不加就认为是一个原生属性-->
+  <!--<my-button @click.native="change"></my-button>-->
+  <!--子级调用父级的方法-->
+  <my-button @click="change"></my-button>
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+  let vm = new Vue({  // 根实例
+    el: '#app',
+    data: {
+      content: '点我啊'
+    },
+    methods: {
+      change() {
+        alert('hhh')
+      }
+    },
+    components: {
+      'MyButton': {
+        mounted() {  // v-bind=this.$attrs  v-on=this.$listeners 绑定所有的方法
+          console.log(this.$listeners)
+        },
+        template: `<div><button @click="$listeners.click()">点我啊</button></div>`
+      }
+    }
+  })
+  // 组件交互
+</script>
+</body>
+</html>

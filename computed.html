@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div id="app">
+
+  </div>
+
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        msg: 'hello',
+        firstName: 'lu',
+        lastName: 'bing',
+        fullName: ''
+      },
+      mounted(){ // 在不同的阶段会被调用 钩子函数
+        this.getFullName()
+      },
+      // computed和method的区别，method只要改数据，其他的也都会改变， computed会缓存，没有改变的数据就取缓存里的
+      // computed和watch的区别 watch可以支持异步
+      // watch可以实现一些简单功能
+      // methods: {  //  同步的
+      //   getFullName(){
+      //     this.fullName = this.firstName + this.lastName
+      //   }
+      // },
+      watch: {
+        firstName(newValue){
+          this.getFullName()
+        },
+        lastName(){
+          this.getFullName()
+        }
+    }
+
+    })
+  </script>
+</body>
+</html>

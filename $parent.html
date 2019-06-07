@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      .title {
+        width: 100px;
+        line-height: 30px;
+        border: 1px solid red;
+        text-align: center;
+      }
+    </style>
+</head>
+<body>
+  <div id="app">
+    <collapse>
+      <collapse-item title="react">内容1</collapse-item>
+      <collapse-item title="vue">内容2</collapse-item>
+      <collapse-item title="node">内容3</collapse-item>
+    </collapse>
+  </div>
+
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script>
+    // 平级通信  $parent  $children  多少个组件就多少_uid,父组件也算一个
+    Vue.component('Collapse', {
+      template: `<div class="warp"><slot></slot></div>`,
+      methods: {  // 要知道当前点击的元素
+        cut(childId) {
+          this.$children.forEach(child => {
+            if(child._uid !== childId){
+              child.show = false
+            }
+          })
+        }
+      }
+    })
+    Vue.component('CollapseItem', {
+      props: ['title'],
+      data() {
+        return {show: false}
+      },
+      methods: {
+        change() {
+          console.log(this)
+          this.$parent.cut(this._uid)
+          this.show = !this.show
+        }
+      },
+      template: `<div>
+                  <div class="title" @click="change">{{title}}</div>
+                  <div v-show="show">
+                   <slot></slot>
+                  </div>
+                 </div>`
+    })
+    let vm = new Vue({
+      el: '#app'
+    })
+  </script>
+</body>
+</html>

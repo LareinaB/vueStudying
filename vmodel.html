@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div id="app">
+    <input type="text" :value="msg" @input="(e)=>{msg=e.target.value}">
+    <!--v-model是 @input + :value的语法糖-->
+    <input type="text" v-model="msg">
+    {{msg}}
+    <!--list.id会赋给selectValue-->
+    <select v-model="selectValue">
+      <option :value="0" disabled>请选择</option>
+      <option v-for="(list, key) in lists" :value="list.id">{{list.value}}</option>
+    </select>
+    {{selectValue}}
+
+    male: <input type="radio" v-model="radioValue" value="male">
+    female: <input type="radio" v-model="radioValue" value="female">
+
+    {{radioValue}}
+
+    <input type="checkbox" v-model="checkValue">
+    {{checkValue}}
+
+    <!--修饰符.number .trim-->
+    <input type="text" v-model.number="val"> {{typeof val}}
+
+    <!--键盘修饰符  鼠标修饰符-->
+    <input type="text" @keyup.f1="fn">
+
+    全选 <input type="checkbox" v-model="checkAll">
+
+    <input type="checkbox" v-for="(item, key) in checks" v-model="item.value" :key="key">
+  </div>
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script>
+    // 双向数据绑定  单项数据变化 视图更新 双向 视图更新也会影响数据变化
+    // 常用的.ctrl .esc .enter
+    // 自定义一个键盘别名
+    // 样式绑定 class style 数组，对象  数组里可以放多个对象
+    Vue.config.keyCodes = {
+      'f1': 112
+    }
+    let vm = new Vue({
+      data: {
+        val: 0,
+        msg: 'hello',
+        selectValue: 0,
+        radioValue: 'male',
+        checkValue: true,
+        lists: [{value:'menu1',id:1},{value:'menu2',id:2},{value:'menu3',id:3}],
+        checks: [{value:true},{value:false},{value:true}]
+      },
+      methods: {
+        fn(e) {
+          this.msg = e.target.value
+        }
+      },
+      compute: {
+        checkAll: {
+          get(){
+            return this.checks.every(check=>check.value)
+          },
+          set(value){  // 双向绑定数据
+            this.checks.forEach(check=>check.value=value)
+          }
+        }
+      }
+    }).$mount('#app')
+  </script>
+</body>
+</html>

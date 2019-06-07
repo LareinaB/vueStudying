@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  {{msg}}
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+
+  let vm = new Vue({
+    data: {
+      msg: 'hello',
+      val: 'hope'
+    },
+    beforeCreate(){ //钩子函数  不能对实例上的属性方法那些做操作
+     console.log(this)   // 初始化自己的生命周期（父节点子节点）并且绑定自己的事件（emit，on，off）
+     this.$data  // undefined
+    },
+    created(){    // 想调用Ajax就用这个，钩子函数是同步的
+      console.log(this.$data)  // 可以获取数据调用方法   没渲染完
+    },
+    beforeMount(){ // 第一次调用渲染函数之前
+      console.log('渲染前')
+    },
+    // rander在这两个中间渲染
+    mounted(){  // 获取真实dom， 这时候页面已经渲染完了
+      // 渲染后
+      console.log('渲染后', this.$el.innerHTML)
+      this.msg = 'hmmmm'
+    },
+    beforeUpdate() {
+      this.val = '2324';
+      console.log('更新前')
+    },
+    updated() {  //  一般在这不要操作数据 可能会导致死循环
+      console.log('更新后')
+    },
+    beforeDestroy() {  // 当前实例还可以用  一般在这做解绑操作
+      console.log('销毁前');
+      clearInterval(this.timer)
+    },
+    destroyed() { // 实例上的方法  监听全都被移除了
+      console.log('销毁后')
+    }
+    //  路由切换会调用前一个路由的destroyed 手动销毁
+  }).$mount('#app')
+</script>
+</body>
+</html>

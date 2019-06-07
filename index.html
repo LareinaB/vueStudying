@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>vueLearning</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" v-model="student.name">
+      <input type="text" v-model="student.age">
+      <div>{{student.name}}</div>
+      <div>{{student.age}}</div>
+      <!-- 数据不变化 视图就不会更新 -->
+      {{getNewName}}
+      <!-- 会在内部匹配到{{}} -->
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </ul>
+      <button v-on:click="change">更新操作</button>
+      <div v-html="message"></div>
+    </div>
+
+    <script src="MVVM.js"></script>
+    <script>
+      let vm = new Vue({
+        el: '#app',
+        data: {
+          student: {
+            name: 'lubing',
+            age: 24
+          },
+          message: '<h1>hello vue</h1>'
+        },
+        computed: {
+          getNewName() {
+            return this.student.name + 'xixi'
+          }
+        },
+        methods: {
+          change(){
+            this.student.name = 'xiaopao'
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

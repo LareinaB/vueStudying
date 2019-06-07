@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+  <!--组件化 开发的优点 方便协作 方便维护 复用 （数据是根据传入的数据展示）-->
+  <!--组件的定义方式有两种 全局组件 局部组件-->
+  <div id="app">
+    <!--<my-button></my-button>-->
+    <!--在父级中使用的数据 就是父级的-->
+    <my-button :msg="content" a="1" b="2"></my-button>
+  </div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+  // 全局
+  // Vue.component('my-button', {
+  //   data() {
+  //     return {msg: '点我啊'}
+  //   },
+  //   template: `<button>{{msg}}</button>`
+  // })
+  let vm = new Vue({  // 根实例
+    el: '#app',
+    components: {
+      'MyButton': {
+        mounted() {
+          // 没有使用的属性 保留在 this.$attrs中
+          console.log(this.$attrs)
+        },
+        inheritAttrs: false,  //没有用到的数据不会显示在dom中
+        template: `<div>my-button <my v-bind="$attrs"></my></div>`,
+        components: {
+          'my': {
+            props: ['a','b'],
+            template: `<span>{{a}} {{b}}</span>`
+          }
+        }
+        // data() {
+        //   return {msg: '点我呀'}
+        // },
+        // template: `<button>{{msg}}</button>`
+      }
+    }
+  })
+  // 组件交互
+</script>
+</body>
+</html>
